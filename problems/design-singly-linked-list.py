@@ -1,7 +1,7 @@
 class LinkNode:
-    def __init__(self, value, link=None):
+    def __init__(self, value, next=None):
         self.value = value
-        self.link = link
+        self.next = next
 
 class LinkedList:
     
@@ -20,7 +20,7 @@ class LinkedList:
             if index == 0:
                 return dummy.value
 
-            dummy = dummy.link
+            dummy = dummy.next
             index -= 1
 
 
@@ -34,7 +34,7 @@ class LinkedList:
             self.head = node
             self.tail = node
         else:
-            node.link = self.head
+            node.next = self.head
             self.head = node
         
 
@@ -46,7 +46,7 @@ class LinkedList:
             self.tail = node
         else:
             # The old tail must connect to the new one
-            self.tail.link = node
+            self.tail.next = node
             self.tail = node
         
 
@@ -56,7 +56,7 @@ class LinkedList:
 
         # special case for the first value
         if index == 0:
-            self.head = self.head.link
+            self.head = self.head.next
 
             if self.head is None:
                 self.tail = None
@@ -65,19 +65,19 @@ class LinkedList:
 
         dummy = self.head
 
-        while not (dummy is None or dummy.link is None):
+        while not (dummy is None or dummy.next is None):
             index -= 1
 
             if index == 0:
                 # delete the next value
-                dummy.link = dummy.link.link
+                dummy.next = dummy.next.next
 
-                if dummy.link is None:
+                if dummy.next is None:
                     self.tail = dummy
 
                 return True
 
-            dummy = dummy.link
+            dummy = dummy.next
 
         return False
         
@@ -89,7 +89,7 @@ class LinkedList:
 
         while dummy is not None:
             values.append(dummy.value)
-            dummy = dummy.link
+            dummy = dummy.next
 
         return values
         
