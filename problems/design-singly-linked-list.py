@@ -1,69 +1,95 @@
-# Helper function because LinkedList doesn't have arguments
-def make_list(head, link) -> LinkedList:
-    ls = LinkedList()
-    ls.head = head
-    ls.link = link
-    return ls
+class LinkNode:
+    def __init__(self, value, link=None):
+        self.value = value
+        self.link = link
 
 class LinkedList:
     
     def __init__(self):
         self.head = None
-        self.link = None
+        self.tail = None
 
     
     def get(self, index: int) -> int:
         if self.head is None:
             return -1
-        elif index == 0:
-            return self.head
-        elif self.link is None:
-            return -1
-        else:
-            return self.link.get(index - 1)
+
+        dummy = self.head
+
+        while dummy is not None:
+            if index == 0:
+                return dummy.value
+
+            dummy = dummy.link
+            index -= 1
+
+
+        return -1
         
 
     def insertHead(self, val: int) -> None:
-        if self.head is not None:
-            self.link = make_list(self.head, self.link)
+        node = LinkNode(val)
 
-        self.head = val
+        if self.head is None:
+            self.head = node
+            self.tail = node
+        else:
+            node.link = self.head
+            self.head = node
         
 
     def insertTail(self, val: int) -> None:
+        node = LinkNode(val)
+
         if self.head is None:
-            self.head = val
-        elif self.link is None:
-            self.link = make_list(val, None)
+            self.head = node
+            self.tail = node
         else:
-            self.link.insertTail(val)
+            # The old tail must connect to the new one
+            self.tail.link = node
+            self.tail = node
         
 
     def remove(self, index: int) -> bool:
         if self.head is None:
             return False
-        elif index == 0:
-            if self.link is None:
-                self.head = None
-            else:
-                self.head = self.link.head
-                self.link = self.link.link
+
+        # special case for the first value
+        if index == 0:
+            self.head = self.head.link
+
+            if self.head is None:
+                self.tail = None
 
             return True
-        elif self.link is None:
-            return False
-        else:
-            return self.link.remove(index - 1)
+
+        dummy = self.head
+
+        while not (dummy is None or dummy.link is None):
+            index -= 1
+
+            if index == 0:
+                # delete the next value
+                dummy.link = dummy.link.link
+
+                if dummy.link is None:
+                    self.tail = dummy
+
+                return True
+
+            dummy = dummy.link
+
+        return False
         
 
     def getValues(self) -> List[int]:
         values = []
 
-        current = self
+        dummy = self.head
 
-        while not (current is None or current.head is None):
-            values.append(current.head)
-            current = current.link
+        while dummy is not None:
+            values.append(dummy.value)
+            dummy = dummy.link
 
         return values
         
