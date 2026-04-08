@@ -23,7 +23,6 @@ class LinkedList:
             dummy = dummy.next
             index -= 1
 
-
         return -1
         
 
@@ -65,7 +64,7 @@ class LinkedList:
 
         dummy = self.head
 
-        while not (dummy is None or dummy.next is None):
+        while not (dummy.next is None):
             index -= 1
 
             if index == 0:
